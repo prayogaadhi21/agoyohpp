@@ -24,15 +24,15 @@ Tabel yang sudah dibuat: branches, products, users, warehouse_stock, branch_stoc
 
 Fondasi project yang sudah dibuat: supabase/schema.sql (seluruh skema database), package.json, .gitignore, next.config.js, .env.local.example, lib/supabaseClient.js (koneksi ke Supabase), app/layout.js (root layout), app/page.js (redirect otomatis ke halaman login), app/login/page.js (form login yang mendeteksi role user dan redirect ke dashboard sesuai role), serta README.md (panduan setup Supabase, install, run local, dan deploy ke Vercel).
 
-Dashboard placeholder yang masih berupa halaman kosong (belum ada fitur): app/admin/page.js, app/kasir/page.js, dan app/staff/page.js.
+Dashboard placeholder yang masih berupa halaman kosong (belum ada fitur): app/admin/page.js dan app/staff/page.js.
 
 Modul Gudang sudah lengkap, terdiri dari: app/gudang/page.js (dashboard dengan navigasi ke 3 sub halaman), app/gudang/stok/page.js (tampilan stock gudang, join warehouse_stock dengan products), app/gudang/po-eksternal/page.js (daftar PO Eksternal), app/gudang/po-eksternal/baru/page.js (form membuat PO Eksternal baru dengan multi item), dan app/gudang/request/page.js (daftar request/PO Internal dari cabang dengan tombol "Setujui dan Kirim" yang otomatis membuat stock_transfer, mengurangi warehouse_stock, menambah branch_stock, dan update status request).
 
-Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses.
+Modul Kasir/POS sudah lengkap di app/kasir/page.js: menampilkan menu dari menu_items (yang aktif saja), kasir bisa klik menu untuk menambah ke keranjang, atur jumlah tiap item, lihat total harga, lalu klik "Proses Transaksi". Saat transaksi diproses: sistem menyimpan data ke pos_transactions dan pos_transaction_items, lalu otomatis membaca resep tiap menu dari tabel recipes dan mengurangi branch_stock cabang tempat kasir bertugas sesuai takaran resep dikali jumlah terjual. Profil kasir (nama, id, dan cabang) diambil otomatis dari akun yang sedang login lewat tabel users.
+
+Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
 
 === MODUL YANG BELUM DIKERJAKAN ===
-
-Modul Kasir/POS (app/kasir/page.js masih placeholder): perlu tampilan menu, keranjang belanja, proses transaksi, dan logika otomatis mengurangi branch_stock berdasarkan recipes saat transaksi berhasil.
 
 Modul Staff (app/staff/page.js masih placeholder): perlu tampilan stock cabang yang bersifat read-only.
 
@@ -42,9 +42,11 @@ Setup Supabase project oleh owner (buat akun, jalankan schema.sql, isi .env.loca
 
 Deploy ke Vercel belum dilakukan.
 
+Pengujian end-to-end (login sungguhan, transaksi kasir sungguhan) belum bisa dilakukan karena Supabase belum di-setup.
+
 === LANGKAH SELANJUTNYA ===
 
-Ada dua opsi yang bisa dipilih untuk dilanjutkan: lanjut membangun modul Kasir/POS, atau setup Supabase (buat akun, jalankan schema, konfigurasi .env.local) supaya project bisa mulai dites/dijalankan.
+Ada dua opsi yang bisa dipilih untuk dilanjutkan: lanjut membangun modul Staff dan Admin, atau setup Supabase (buat akun, jalankan schema, konfigurasi .env.local) supaya project bisa mulai dites/dijalankan.
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
