@@ -1,4 +1,4 @@
--- Skema database untuk sistem gudang + POS coffee shop (agoyohpp)
+-- Skema database untuk sistem AGOYO STOCK + POS AGOYO (agoyohpp)
 -- Dijalankan di Supabase SQL Editor
 
 create extension if not exists "pgcrypto";
@@ -15,17 +15,17 @@ create table warehouse_stock (id uuid primary key default gen_random_uuid(), pro
 
 create table branch_stock (id uuid primary key default gen_random_uuid(), branch_id uuid references branches(id), product_id uuid references products(id), quantity numeric not null default 0, updated_at timestamptz default now());
 
--- PO Eksternal (gudang ke supplier)
+-- PO Eksternal (AGOYO STOCK ke supplier)
 create table external_po (id uuid primary key default gen_random_uuid(), po_number text not null, supplier_name text not null, status text not null default 'draft' check (status in ('draft','dipesan','diterima','dibatalkan')), created_by uuid references users(id), created_at timestamptz default now());
 
 create table external_po_items (id uuid primary key default gen_random_uuid(), external_po_id uuid references external_po(id) on delete cascade, product_id uuid references products(id), quantity numeric not null, price numeric, received_quantity numeric default 0);
 
--- Request Internal (cabang ke gudang)
+-- Request Internal (cabang ke AGOYO STOCK)
 create table internal_request (id uuid primary key default gen_random_uuid(), branch_id uuid references branches(id), requested_by uuid references users(id), status text not null default 'pending' check (status in ('pending','disetujui','dikirim','ditolak')), created_at timestamptz default now());
 
 create table internal_request_items (id uuid primary key default gen_random_uuid(), internal_request_id uuid references internal_request(id) on delete cascade, product_id uuid references products(id), quantity_requested numeric not null, quantity_approved numeric);
 
--- Transfer stok gudang -> cabang
+-- Transfer stok AGOYO STOCK -> cabang
 create table stock_transfer (id uuid primary key default gen_random_uuid(), from_branch_id uuid references branches(id), to_branch_id uuid references branches(id), internal_request_id uuid references internal_request(id), status text not null default 'dikirim' check (status in ('dikirim','diterima')), created_by uuid references users(id), created_at timestamptz default now());
 
 create table stock_transfer_items (id uuid primary key default gen_random_uuid(), stock_transfer_id uuid references stock_transfer(id) on delete cascade, product_id uuid references products(id), quantity numeric not null);
