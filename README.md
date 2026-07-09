@@ -1,32 +1,19 @@
-# Agoyohpp
+Agoyohpp
 
-Sistem manajemen gudang (inbound/outbound) dan kasir (POS) untuk 1 gudang pusat yang melayani 3 cabang coffee shop.
+Sistem manajemen AGOYO STOCK (inbound/outbound) dan kasir (POS) untuk 1 AGOYO STOCK pusat yang melayani 3 cabang AGOYO.
 
-## Stack teknologi
+STACK TEKNOLOGI
 
-- Next.js (frontend dan backend API dalam satu project)
-- Supabase (database PostgreSQL, autentikasi, dan siap untuk fitur realtime)
+Next.js (frontend dan backend API dalam satu project). Supabase (database PostgreSQL, autentikasi, dan siap untuk fitur realtime).
 
-## Struktur project
+STRUKTUR PROJECT
 
-- app/login - halaman login dengan pengarahan otomatis sesuai role (admin, gudang, kasir, staff)
-- app/admin - dashboard admin (akses penuh)
-- app/gudang - dashboard gudang (stok, PO eksternal, request dari cabang)
-- app/kasir - dashboard kasir POS
-- app/staff - dashboard staff (lihat stok cabang)
-- lib/supabaseClient.js - koneksi ke Supabase
-- supabase/schema.sql - skema database lengkap (jalankan di SQL Editor Supabase)
+app/login: halaman login dengan pengarahan otomatis sesuai role (admin, gudang, kasir, staff). app/admin: dashboard admin (akses penuh). app/gudang: dashboard AGOYO STOCK (stok, PO eksternal, request dari cabang AGOYO). app/kasir: dashboard kasir POS. app/staff: dashboard staff (lihat stok cabang AGOYO). lib/supabaseClient.js: koneksi ke Supabase. supabase/schema.sql: skema database lengkap (jalankan di SQL Editor Supabase).
 
-## Cara mulai development
+CARA MULAI DEVELOPMENT
 
-1. Buat akun gratis di supabase.com, lalu buat project baru.
-2. Di dashboard Supabase, buka SQL Editor lalu jalankan isi file supabase/schema.sql untuk membuat semua tabel.
-3. Di dashboard Supabase, buka Project Settings > API untuk menyalin Project URL dan anon public key.
-4. Clone repo ini ke komputer, lalu jalankan npm install.
-5. Copy file .env.local.example menjadi .env.local, lalu isi dengan Project URL dan anon key dari langkah 3.
-6. Jalankan npm run dev untuk menjalankan aplikasi secara lokal di http://localhost:3000
-7. Untuk deploy gratis, hubungkan repo ini ke akun Vercel (vercel.com) dan tambahkan environment variable yang sama seperti di .env.local.
+Pertama, buat akun gratis di supabase.com, lalu buat project baru. Kedua, di dashboard Supabase, buka SQL Editor lalu jalankan isi file supabase/schema.sql untuk membuat semua tabel. Ketiga, di dashboard Supabase, buka Project Settings > API untuk menyalin Project URL dan anon public key. Keempat, clone repo ini ke komputer, lalu jalankan npm install. Kelima, copy file .env.local.example menjadi .env.local, lalu isi dengan Project URL dan anon key dari langkah sebelumnya. Keenam, jalankan npm run dev untuk menjalankan aplikasi secara lokal di http://localhost:3000. Ketujuh, untuk deploy gratis, hubungkan repo ini ke akun Vercel (vercel.com) dan tambahkan environment variable yang sama seperti di .env.local.
 
-## Status pengembangan
+STATUS PENGEMBANGAN
 
-Project masih dalam tahap awal. Modul stok, PO eksternal, request internal, transfer antar lokasi, dan transaksi kasir akan dibangun secara bertahap.
+Project masih dalam tahap awal. Modul stok AGOYO STOCK, PO eksternal, request internal, transfer antar lokasi, dan transaksi kasir AGOYO akan dibangun secara bertahap.
