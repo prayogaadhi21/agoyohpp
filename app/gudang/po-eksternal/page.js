@@ -29,7 +29,7 @@ useEffect(() => {
 
 return (
   <main style={{ padding: 40, fontFamily: 'sans-serif' }}>
-<p><Link href="/gudang">Kembali ke Dashboard Gudang</Link></p>
+<p><Link href="/gudang">Kembali ke Dashboard AGOYO STOCK</Link></p>
   <h1>PO Eksternal</h1>
 <p><Link href="/gudang/po-eksternal/baru">Buat PO Baru</Link></p>
 {loading && <p>Memuat data...</p>}
