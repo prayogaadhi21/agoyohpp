@@ -104,7 +104,7 @@ async function handleApproveAndSend(request) {
 
 return (
   <main style={{ padding: 40, fontFamily: 'sans-serif' }}>
-<p><Link href="/gudang">Kembali ke Dashboard Gudang</Link></p>
+<p><Link href="/gudang">Kembali ke Dashboard AGOYO STOCK</Link></p>
   <h1>Request dari Cabang</h1>
 {loading && <p>Memuat data...</p>}
  {error && <p style={{ color: 'red' }}>{error}</p>}
