@@ -1,4 +1,4 @@
-PROGRESS PROJECT - Gudang & Kasir Coffee Shop
+PROGRESS PROJECT - Gudang & Kasir AGOYO
 
 Catatan ini dibuat supaya siapapun (atau Claude versi apapun: Claude Code, Claude di browser, dsb) yang membuka repo ini bisa langsung paham progress project tanpa perlu histori chat sebelumnya.
 
