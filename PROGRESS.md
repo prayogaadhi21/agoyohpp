@@ -4,7 +4,7 @@ Catatan ini dibuat supaya siapapun (atau Claude versi apapun: Claude Code, Claud
 
 === LATAR BELAKANG BISNIS ===
 
-Website ini dibuat untuk kebutuhan: 1 gudang pusat yang melayani 3 cabang coffee shop; pencatatan stock aktual gudang per hari; PO Eksternal yaitu gudang membeli kebutuhan yang berkurang/habis di stock gudang tanpa alur approval terpisah (tim gudang bisa input langsung); PO Internal (Request) yaitu permintaan barang dari coffee shop ke gudang; transfer stock antar gudang ke cabang, di mana begitu dikirim kepemilikan stock pindah dari warehouse_stock ke branch_stock; Kasir/POS untuk penjualan langsung ke pelanggan di tiap cabang; dan saat transaksi kasir, stock cabang otomatis berkurang berdasarkan resep (bill of materials) yang sudah dibakukan per menu.
+Website ini dibuat untuk kebutuhan: 1 gudang pusat yang melayani 3 cabang AGOYO; pencatatan stock aktual gudang per hari; PO Eksternal yaitu gudang membeli kebutuhan yang berkurang/habis di stock gudang tanpa alur approval terpisah (tim gudang bisa input langsung); PO Internal (Request) yaitu permintaan barang dari AGOYO ke gudang; transfer stock antar gudang ke cabang, di mana begitu dikirim kepemilikan stock pindah dari warehouse_stock ke branch_stock; Kasir/POS untuk penjualan langsung ke pelanggan di tiap cabang; dan saat transaksi kasir, stock cabang otomatis berkurang berdasarkan resep (bill of materials) yang sudah dibakukan per menu.
 
 === ROLE DAN AKSES ===
 
