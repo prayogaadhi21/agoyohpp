@@ -32,9 +32,11 @@ Modul Staff sudah selesai di app/staff/page.js: menampilkan profil staff (nama d
 
 Modul Admin sudah selesai di app/admin/page.js: dashboard ringkasan yang menampilkan lima bagian sekaligus, yaitu stock gudang (warehouse_stock join products), stock semua cabang (branch_stock join branches dan products), 10 PO Eksternal terbaru, 10 request/PO Internal dari cabang terbaru, dan 10 transaksi kasir terbaru lengkap dengan total pendapatan dari transaksi yang ditampilkan. Semua data diambil paralel dengan Promise.all supaya loading lebih cepat.
 
-Setup Supabase project oleh owner sudah selesai: owner membuat project bernama AGOYO (region Tokyo, free tier) di alamat gwqveulolefenfseopda.supabase.co, lalu seluruh isi supabase/schema.sql sudah dijalankan lewat SQL Editor sehingga 15 tabel sudah tersedia di database sungguhan (bukan cuma di repo). Owner juga sudah install Git dan Node.js di komputernya, clone repo ke lokal, jalankan npm install, dan membuat file .env.local berisi NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sesuai project AGOYO tersebut. Server lokal (npm run dev) sudah berhasil jalan dan halaman /login sudah tampil di browser owner.
+Setup Supabase project oleh owner sudah selesai: owner membuat project bernama AGOYO (region Tokyo, free tier) di alamat gwqveulolefenfseopda.supabase.co, lalu seluruh isi supabase/schema.sql sudah dijalankan lewat SQL Editor sehingga 15 tabel sudah tersedia di database sungguhan (bukan cuma di repo). Owner juga sudah install Git dan Node.js di komputernya, clone repo ke lokal, jalankan npm install, dan membuat file .env.local berisi NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sesuai project AGOYO tersebut. Server lokal (npm run dev) sudah berhasil jalan.
 
-User admin pertama juga sudah dibuat: owner menambahkan satu user lewat Supabase Authentication (Add user), lalu baris terkait sudah di-insert ke tabel users dengan auth_user_id yang sama dan role admin, supaya begitu login lewat email itu, aplikasi akan mengarahkan ke dashboard /admin.
+User admin pertama sudah dibuat dan sudah dites: owner menambahkan satu user lewat Supabase Authentication (Add user), baris terkait sudah di-insert ke tabel users dengan auth_user_id yang sama dan role admin, dan owner sudah berhasil login serta masuk ke dashboard /admin di localhost:3000/admin.
+
+Data awal (seed data) sudah diisi ke database lewat SQL Editor: 4 baris di tabel branches (1 gudang pusat "AGOYO STOCK Pusat" bertipe warehouse, dan 3 cabang coffee shop bertipe branch: Kemang, Kelapa Gading, BSD), 8 baris di tabel products (bahan baku seperti Kopi Arabika, Kopi Robusta, Susu UHT, Gula Aren, Sirup Vanilla, Bubuk Coklat, serta kemasan Cup 12oz dan Cup 16oz), dan 8 baris di tabel warehouse_stock (stock awal gudang untuk masing-masing produk tersebut). Stock cabang (branch_stock) sengaja dibiarkan kosong dulu karena secara bisnis stock baru berpindah ke cabang lewat proses transfer, bukan diisi langsung.
 
 Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
 
@@ -44,15 +46,15 @@ Catatan tambahan: link "Stok AGOYO STOCK" di dashboard Gudang (app/gudang/page.j
 
 Halaman app/gudang/stok/page.js (tampilan stock gudang) belum ada, padahal sudah ada link ke halaman itu dari dashboard Gudang.
 
-Login sungguhan dengan user admin yang sudah dibuat belum dikonfirmasi berhasil sampai masuk ke dashboard /admin (masih menunggu owner mencoba).
-
 User untuk role gudang, kasir, dan staff belum dibuat di Supabase Authentication maupun tabel users, jadi role-role tersebut belum bisa dites end-to-end.
+
+Belum ada request/PO Internal, PO Eksternal, transfer stock, menu_items, recipes, maupun transaksi kasir yang dites dengan data sungguhan, karena role gudang/kasir belum ada usernya.
 
 Deploy ke Vercel belum dilakukan.
 
 === LANGKAH SELANJUTNYA ===
 
-Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: memastikan login admin berhasil masuk ke dashboard /admin, membuat user tambahan untuk role gudang/kasir/staff supaya semua role bisa dites, membuat halaman app/gudang/stok/page.js yang masih hilang, atau mulai proses deploy ke Vercel.
+Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: membuat user untuk role gudang/kasir/staff supaya semua role bisa dites, membuat halaman app/gudang/stok/page.js yang masih hilang, mengisi menu_items dan recipes supaya modul Kasir bisa dites transaksinya, atau mulai proses deploy ke Vercel.
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
