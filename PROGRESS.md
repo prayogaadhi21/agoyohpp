@@ -32,6 +32,10 @@ Modul Staff sudah selesai di app/staff/page.js: menampilkan profil staff (nama d
 
 Modul Admin sudah selesai di app/admin/page.js: dashboard ringkasan yang menampilkan lima bagian sekaligus, yaitu stock gudang (warehouse_stock join products), stock semua cabang (branch_stock join branches dan products), 10 PO Eksternal terbaru, 10 request/PO Internal dari cabang terbaru, dan 10 transaksi kasir terbaru lengkap dengan total pendapatan dari transaksi yang ditampilkan. Semua data diambil paralel dengan Promise.all supaya loading lebih cepat.
 
+Setup Supabase project oleh owner sudah selesai: owner membuat project bernama AGOYO (region Tokyo, free tier) di alamat gwqveulolefenfseopda.supabase.co, lalu seluruh isi supabase/schema.sql sudah dijalankan lewat SQL Editor sehingga 15 tabel sudah tersedia di database sungguhan (bukan cuma di repo). Owner juga sudah install Git dan Node.js di komputernya, clone repo ke lokal, jalankan npm install, dan membuat file .env.local berisi NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sesuai project AGOYO tersebut. Server lokal (npm run dev) sudah berhasil jalan dan halaman /login sudah tampil di browser owner.
+
+User admin pertama juga sudah dibuat: owner menambahkan satu user lewat Supabase Authentication (Add user), lalu baris terkait sudah di-insert ke tabel users dengan auth_user_id yang sama dan role admin, supaya begitu login lewat email itu, aplikasi akan mengarahkan ke dashboard /admin.
+
 Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
 
 Catatan tambahan: link "Stok AGOYO STOCK" di dashboard Gudang (app/gudang/page.js) mengarah ke app/gudang/stok/page.js, namun file tersebut belum pernah dibuat di repo ini sehingga saat ini akan menampilkan halaman 404. Ini perlu dibuat menyusul.
@@ -40,15 +44,15 @@ Catatan tambahan: link "Stok AGOYO STOCK" di dashboard Gudang (app/gudang/page.j
 
 Halaman app/gudang/stok/page.js (tampilan stock gudang) belum ada, padahal sudah ada link ke halaman itu dari dashboard Gudang.
 
-Setup Supabase project oleh owner (buat akun, jalankan schema.sql, isi .env.local) belum pernah dilakukan dan harus dikerjakan oleh owner sendiri.
+Login sungguhan dengan user admin yang sudah dibuat belum dikonfirmasi berhasil sampai masuk ke dashboard /admin (masih menunggu owner mencoba).
+
+User untuk role gudang, kasir, dan staff belum dibuat di Supabase Authentication maupun tabel users, jadi role-role tersebut belum bisa dites end-to-end.
 
 Deploy ke Vercel belum dilakukan.
 
-Pengujian end-to-end (login sungguhan, transaksi kasir sungguhan) belum bisa dilakukan karena Supabase belum di-setup.
-
 === LANGKAH SELANJUTNYA ===
 
-Ada dua opsi yang bisa dipilih untuk dilanjutkan: membuat halaman app/gudang/stok/page.js yang masih hilang, atau setup Supabase (buat akun, jalankan schema, konfigurasi .env.local) supaya project bisa mulai dites/dijalankan.
+Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: memastikan login admin berhasil masuk ke dashboard /admin, membuat user tambahan untuk role gudang/kasir/staff supaya semua role bisa dites, membuat halaman app/gudang/stok/page.js yang masih hilang, atau mulai proses deploy ke Vercel.
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
