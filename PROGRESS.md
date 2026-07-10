@@ -32,29 +32,31 @@ Modul Staff sudah selesai di app/staff/page.js: menampilkan profil staff (nama d
 
 Modul Admin sudah selesai di app/admin/page.js: dashboard ringkasan yang menampilkan lima bagian sekaligus, yaitu stock gudang (warehouse_stock join products), stock semua cabang (branch_stock join branches dan products), 10 PO Eksternal terbaru, 10 request/PO Internal dari cabang terbaru, dan 10 transaksi kasir terbaru lengkap dengan total pendapatan dari transaksi yang ditampilkan. Semua data diambil paralel dengan Promise.all supaya loading lebih cepat.
 
-Setup Supabase project oleh owner sudah selesai: owner membuat project bernama AGOYO (region Tokyo, free tier) di alamat gwqveulolefenfseopda.supabase.co, lalu seluruh isi supabase/schema.sql sudah dijalankan lewat SQL Editor sehingga 15 tabel sudah tersedia di database sungguhan (bukan cuma di repo). Owner juga sudah install Git dan Node.js di komputernya, clone repo ke lokal, jalankan npm install, dan membuat file .env.local berisi NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sesuai project AGOYO tersebut. Server lokal (npm run dev) sudah berhasil jalan.
-
-User admin pertama sudah dibuat dan sudah dites: owner menambahkan satu user lewat Supabase Authentication (Add user), baris terkait sudah di-insert ke tabel users dengan auth_user_id yang sama dan role admin, dan owner sudah berhasil login serta masuk ke dashboard /admin di localhost:3000/admin.
+Setup Supabase project oleh owner sudah selesai: owner membuat project bernama AGOYO (region Tokyo, free tier) di alamat gwqveulolefenfseopda.supabase.co, lalu seluruh isi supabase/schema.sql sudah dijalankan lewat SQL Editor sehingga 15 tabel sudah tersedia di database sungguhan. Owner juga sudah install Git dan Node.js di komputernya, clone repo ke lokal, jalankan npm install, dan membuat file .env.local berisi NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sesuai project AGOYO tersebut. Server lokal (npm run dev) sudah berhasil jalan.
 
 Data awal (seed data) sudah diisi ke database lewat SQL Editor: 4 baris di tabel branches (1 gudang pusat "AGOYO STOCK Pusat" bertipe warehouse, dan 3 cabang coffee shop bertipe branch: Kemang, Kelapa Gading, BSD), 8 baris di tabel products (bahan baku seperti Kopi Arabika, Kopi Robusta, Susu UHT, Gula Aren, Sirup Vanilla, Bubuk Coklat, serta kemasan Cup 12oz dan Cup 16oz), dan 8 baris di tabel warehouse_stock (stock awal gudang untuk masing-masing produk tersebut). Stock cabang (branch_stock) sengaja dibiarkan kosong dulu karena secara bisnis stock baru berpindah ke cabang lewat proses transfer, bukan diisi langsung.
+
+Semua role sekarang sudah punya user dan sudah dites login: admin (prayogaadhidewabrata@gmail.com, sudah berhasil masuk ke dashboard /admin), gudang (boya@boya.com, tidak terikat cabang tertentu), kasir (cahyani@sri.com, terikat ke cabang AGOYO Coffee - Kemang), dan staff (rafasya@hayyan.com, terikat ke cabang AGOYO Coffee - Kelapa Gading). Setiap user dibuat lewat Supabase Authentication (Add user) oleh owner sendiri, lalu baris terkait di-insert ke tabel users dengan auth_user_id yang sama dan role/branch_id yang sesuai.
+
+Data menu dan resep juga sudah diisi supaya modul Kasir bisa dites transaksinya: 5 baris di menu_items (Espresso, Cappuccino, Cafe Latte, Kopi Susu Gula Aren, Chocolate) dan 15 baris di recipes yang menghubungkan tiap menu ke bahan baku serta jumlah yang terpakai per porsi.
 
 Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
 
 Catatan tambahan: link "Stok AGOYO STOCK" di dashboard Gudang (app/gudang/page.js) mengarah ke app/gudang/stok/page.js, namun file tersebut belum pernah dibuat di repo ini sehingga saat ini akan menampilkan halaman 404. Ini perlu dibuat menyusul.
 
+Proses deploy ke Vercel sudah dimulai: owner sudah membuat akun Vercel (namespace "agoyo", masuk masa Pro Trial) menggunakan login GitHub. Owner sedang dalam proses instalasi GitHub App Vercel (klik "Install" di halaman vercel.com/new) supaya Vercel bisa mengakses repo agoyohpp untuk diimport. Proses import project, pengisian environment variable (NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY), dan klik Deploy belum dilakukan karena masih menunggu instalasi GitHub App tersebut selesai.
+
 === MODUL YANG BELUM DIKERJAKAN ===
 
 Halaman app/gudang/stok/page.js (tampilan stock gudang) belum ada, padahal sudah ada link ke halaman itu dari dashboard Gudang.
 
-User untuk role gudang, kasir, dan staff belum dibuat di Supabase Authentication maupun tabel users, jadi role-role tersebut belum bisa dites end-to-end.
+Pengujian end-to-end untuk role gudang, kasir, dan staff (login sungguhan dan mencoba fitur masing-masing seperti membuat PO Eksternal, memproses transaksi kasir, atau melihat stock cabang) belum dilakukan, meskipun user dan data pendukungnya sudah siap.
 
-Belum ada request/PO Internal, PO Eksternal, transfer stock, menu_items, recipes, maupun transaksi kasir yang dites dengan data sungguhan, karena role gudang/kasir belum ada usernya.
-
-Deploy ke Vercel belum dilakukan.
+Deploy ke Vercel belum selesai, masih menunggu instalasi GitHub App Vercel oleh owner, lalu import project, isi environment variables, dan klik Deploy.
 
 === LANGKAH SELANJUTNYA ===
 
-Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: membuat user untuk role gudang/kasir/staff supaya semua role bisa dites, membuat halaman app/gudang/stok/page.js yang masih hilang, mengisi menu_items dan recipes supaya modul Kasir bisa dites transaksinya, atau mulai proses deploy ke Vercel.
+Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: melanjutkan proses deploy ke Vercel (lanjut dari instalasi GitHub App), melakukan pengujian end-to-end tiap role (login sebagai gudang/kasir/staff dan mencoba fitur masing-masing), atau membuat halaman app/gudang/stok/page.js yang masih hilang.
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
