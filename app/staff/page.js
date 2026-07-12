@@ -9,6 +9,11 @@ export default function StaffPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    async function handleLogout() {
+        await supabase.auth.signOut();
+        window.location.href = '/login';
+    }
+
 useEffect(() => {
     loadData();
 }, []);
@@ -59,6 +64,7 @@ async function loadData() {
 return (
     <main style={{ padding: 40, fontFamily: 'sans-serif' }}>
 <h1>Dashboard Staff</h1>
+<button onClick={handleLogout} style={{ marginBottom: 16 }}>Logout</button>
 {profile && (
     <p>
     <strong>{profile.name}</strong> — Cabang: {profile.branches?.name || '-'}
