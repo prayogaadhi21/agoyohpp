@@ -6,8 +6,15 @@ import { supabase } from '../../../lib/supabaseClient';
 
 export default function StokGudangPage() {
   const [stock, setStock] = useState([]);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+const [selectedProductId, setSelectedProductId] = useState('');
+  const [quantityInput, setQuantityInput] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [formSuccess, setFormSuccess] = useState('');
 
 useEffect(() => {
   loadData();
@@ -19,7 +26,7 @@ async function loadData() {
 
   const { data, error: stockError } = await supabase
   .from('warehouse_stock')
-  .select('id, quantity, updated_at, products(name, unit, category)')
+  .select('id, product_id, quantity, updated_at, products(name, unit, category)')
   .order('updated_at', { ascending: false });
 
   if (stockError) {
@@ -28,7 +35,63 @@ async function loadData() {
     setStock(data);
   }
 
+  const { data: productList } = await supabase
+  .from('products')
+  .select('id, name, unit')
+  .order('name');
+  setProducts(productList || []);
+
   setLoading(false);
+}
+
+function handleProductChange(productId) {
+  setSelectedProductId(productId);
+  const existing = stock.find((item) => item.product_id === productId);
+  setQuantityInput(existing ? String(existing.quantity) : '');
+}
+
+async function handleSubmit(e) {
+  e.preventDefault();
+  setFormError('');
+  setFormSuccess('');
+
+  if (!selectedProductId || quantityInput === '') {
+    setFormError('Pilih produk dan isi jumlah terlebih dahulu.');
+    return;
+  }
+
+  setSaving(true);
+
+  const existing = stock.find((item) => item.product_id === selectedProductId);
+
+  if (existing) {
+    const { error: updateError } = await supabase
+    .from('warehouse_stock')
+    .update({ quantity: Number(quantityInput), updated_at: new Date().toISOString() })
+    .eq('id', existing.id);
+
+  if (updateError) {
+    setFormError(updateError.message);
+    setSaving(false);
+    return;
+  }
+  } else {
+    const { error: insertError } = await supabase
+    .from('warehouse_stock')
+    .insert({ product_id: selectedProductId, quantity: Number(quantityInput) });
+
+  if (insertError) {
+    setFormError(insertError.message);
+    setSaving(false);
+    return;
+  }
+  }
+
+  setFormSuccess('Stok berhasil disimpan.');
+  setSelectedProductId('');
+  setQuantityInput('');
+  setSaving(false);
+  loadData();
 }
 
 return (
@@ -36,6 +99,42 @@ return (
 <h1>Stok AGOYO STOCK</h1>
 <p><Link href="/gudang">Kembali ke Dashboard AGOYO STOCK</Link></p>
   <p>Daftar stok bahan baku dan kemasan yang ada di gudang pusat.</p>
+
+<div style={{ border: '1px solid #ccc', padding: 16, marginBottom: 24, maxWidth: 500 }}>
+<h3>Tambah / Edit Stok</h3>
+<form onSubmit={handleSubmit}>
+  <div style={{ marginBottom: 12 }}>
+<label>Produk</label>
+<select
+value={selectedProductId}
+onChange={(e) => handleProductChange(e.target.value)}
+style={{ width: '100%', padding: 8 }}
+required
+>
+  <option value="">Pilih produk</option>
+{products.map((p) => (
+  <option key={p.id} value={p.id}>{p.name} ({p.unit})</option>
+))}
+  </select>
+  </div>
+<div style={{ marginBottom: 12 }}>
+<label>Jumlah</label>
+<input
+type="number"
+value={quantityInput}
+onChange={(e) => setQuantityInput(e.target.value)}
+style={{ width: '100%', padding: 8 }}
+required
+/>
+  </div>
+{formError && <p style={{ color: 'red' }}>{formError}</p>}
+{formSuccess && <p style={{ color: 'green' }}>{formSuccess}</p>}
+<button type="submit" disabled={saving} style={{ padding: '8px 16px' }}>
+{saving ? 'Menyimpan...' : 'Simpan Stok'}
+</button>
+  </form>
+  </div>
+
 {loading && <p>Memuat data...</p>}
  {error && <p style={{ color: 'red' }}>{error}</p>}
  {!loading && !error && (
