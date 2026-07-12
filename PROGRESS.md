@@ -24,35 +24,55 @@ Tabel yang sudah dibuat: branches, products, users, warehouse_stock, branch_stoc
 
 Fondasi project yang sudah dibuat: supabase/schema.sql (seluruh skema database), package.json, .gitignore, next.config.js, .env.local.example, lib/supabaseClient.js (koneksi ke Supabase), app/layout.js (root layout), app/page.js (redirect otomatis ke halaman login), app/login/page.js (form login yang mendeteksi role user dan redirect ke dashboard sesuai role), serta README.md (panduan setup Supabase, install, run local, dan deploy ke Vercel).
 
-Modul Gudang sudah lengkap, terdiri dari: app/gudang/page.js (dashboard dengan navigasi ke 3 sub halaman), app/gudang/stok/page.js (tampilan stock gudang read-only, join warehouse_stock dengan products, menampilkan nama produk, kategori, jumlah, satuan, dan terakhir update), app/gudang/po-eksternal/page.js (daftar PO Eksternal), app/gudang/po-eksternal/baru/page.js (form membuat PO Eksternal baru dengan multi item), dan app/gudang/request/page.js (daftar request/PO Internal dari cabang dengan tombol "Setujui dan Kirim" yang otomatis membuat stock_transfer, mengurangi warehouse_stock, menambah branch_stock, dan update status request).
+Modul Gudang sudah lengkap, terdiri dari: app/gudang/page.js (dashboard dengan navigasi ke 3 sub halaman dan tombol Logout), app/gudang/stok/page.js (tampilan stock gudang read-only, join warehouse_stock dengan products, menampilkan nama produk, kategori, jumlah, satuan, dan terakhir update), app/gudang/po-eksternal/page.js (daftar PO Eksternal), app/gudang/po-eksternal/baru/page.js (form membuat PO Eksternal baru dengan multi item), dan app/gudang/request/page.js (daftar request/PO Internal dari cabang dengan tombol "Setujui dan Kirim" yang otomatis membuat stock_transfer, mengurangi warehouse_stock, menambah branch_stock, dan update status request).
 
-Modul Kasir/POS sudah lengkap di app/kasir/page.js: menampilkan menu dari menu_items (yang aktif saja), kasir bisa klik menu untuk menambah ke keranjang, atur jumlah tiap item, lihat total harga, lalu klik "Proses Transaksi". Saat transaksi diproses: sistem menyimpan data ke pos_transactions dan pos_transaction_items, lalu otomatis membaca resep tiap menu dari tabel recipes dan mengurangi branch_stock cabang tempat kasir bertugas sesuai takaran resep dikali jumlah terjual. Profil kasir (nama, id, dan cabang) diambil otomatis dari akun yang sedang login lewat tabel users.
+Modul Kasir/POS sudah lengkap di app/kasir/page.js: menampilkan menu dari menu_items (yang aktif saja), kasir bisa klik menu untuk menambah ke keranjang, atur jumlah tiap item, lihat total harga, lalu klik "Proses Transaksi". Saat transaksi diproses: sistem menyimpan data ke pos_transactions dan pos_transaction_items, lalu otomatis membaca resep tiap menu dari tabel recipes dan mengurangi branch_stock cabang tempat kasir bertugas sesuai takaran resep dikali jumlah terjual. Profil kasir (nama, id, dan cabang) diambil otomatis dari akun yang sedang login lewat tabel users. Halaman ini juga sudah punya tombol Logout.
 
-Modul Staff sudah selesai di app/staff/page.js: menampilkan profil staff (nama dan cabang) yang diambil otomatis dari akun yang sedang login lewat tabel users, lalu menampilkan stock cabang tersebut (join branch_stock dengan products) dalam bentuk tabel read-only. Staff tidak bisa mengubah data apapun di halaman ini.
+Modul Staff sudah lengkap di app/staff/page.js: menampilkan stock cabang tempat staff bertugas secara read-only (produk, kategori, jumlah, satuan, terakhir update), dan tombol Logout.
 
-Modul Admin sudah selesai di app/admin/page.js: dashboard ringkasan yang menampilkan lima bagian sekaligus, yaitu stock gudang (warehouse_stock join products), stock semua cabang (branch_stock join branches dan products), 10 PO Eksternal terbaru, 10 request/PO Internal dari cabang terbaru, dan 10 transaksi kasir terbaru lengkap dengan total pendapatan dari transaksi yang ditampilkan. Semua data diambil paralel dengan Promise.all supaya loading lebih cepat.
+Modul Admin sudah lengkap di app/admin/page.js: menampilkan ringkasan seluruh data (stock gudang, stock tiap cabang, PO Eksternal terbaru, request dari cabang terbaru, dan transaksi kasir terbaru dengan total pendapatan), dan tombol Logout.
 
-Setup Supabase project oleh owner sudah selesai: owner membuat project bernama AGOYO (region Tokyo, free tier) di alamat gwqveulolefenfseopda.supabase.co, lalu seluruh isi supabase/schema.sql sudah dijalankan lewat SQL Editor sehingga 15 tabel sudah tersedia di database sungguhan. Owner juga sudah install Git dan Node.js di komputernya, clone repo ke lokal, jalankan npm install, dan membuat file .env.local berisi NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sesuai project AGOYO tersebut. Server lokal (npm run dev) sudah berhasil jalan.
-
-Data awal (seed data) sudah diisi ke database lewat SQL Editor: 4 baris di tabel branches (1 gudang pusat "AGOYO STOCK Pusat" bertipe warehouse, dan 3 cabang coffee shop bertipe branch: Kemang, Kelapa Gading, BSD), 8 baris di tabel products (bahan baku seperti Kopi Arabika, Kopi Robusta, Susu UHT, Gula Aren, Sirup Vanilla, Bubuk Coklat, serta kemasan Cup 12oz dan Cup 16oz), dan 8 baris di tabel warehouse_stock (stock awal gudang untuk masing-masing produk tersebut). Stock cabang (branch_stock) sengaja dibiarkan kosong dulu karena secara bisnis stock baru berpindah ke cabang lewat proses transfer, bukan diisi langsung.
-
-Semua role sekarang sudah punya user dan sudah dites login: admin (prayogaadhidewabrata@gmail.com, sudah berhasil masuk ke dashboard /admin), gudang (boya@boya.com, tidak terikat cabang tertentu), kasir (cahyani@sri.com, terikat ke cabang AGOYO Coffee - Kemang), dan staff (rafasya@hayyan.com, terikat ke cabang AGOYO Coffee - Kelapa Gading). Setiap user dibuat lewat Supabase Authentication (Add user) oleh owner sendiri, lalu baris terkait di-insert ke tabel users dengan auth_user_id yang sama dan role/branch_id yang sesuai.
+Semua role sekarang sudah punya user dan sudah dites login: admin (prayogaadhidewabrata@gmail.com), gudang (boya@boya.com, tidak terikat cabang tertentu), kasir (cahyani@sri.com, terikat ke cabang AGOYO Coffee - Kemang), dan staff (rafasya@hayyan.com, terikat ke cabang AGOYO Coffee - Kelapa Gading). Setiap user dibuat lewat Supabase Authentication (Add user) oleh owner sendiri, lalu baris terkait di-insert ke tabel users dengan auth_user_id yang sama dan role/branch_id yang sesuai.
 
 Data menu dan resep juga sudah diisi supaya modul Kasir bisa dites transaksinya: 5 baris di menu_items (Espresso, Cappuccino, Cafe Latte, Kopi Susu Gula Aren, Chocolate) dan 15 baris di recipes yang menghubungkan tiap menu ke bahan baku serta jumlah yang terpakai per porsi.
 
-Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
+Deploy ke Vercel sudah selesai dan berhasil: project agoyohpp sudah di-import ke akun Vercel owner (team/namespace "agoyo") lewat GitHub App yang sudah terpasang. Environment variable NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sudah diisi dengan nilai asli dari dashboard Supabase (Settings > API Keys > Legacy anon key), dan build berhasil tanpa error. Aplikasi sudah live dan bisa diakses di https://agoyohpp.vercel.app.
 
-Deploy ke Vercel sudah selesai dan berhasil: project agoyohpp sudah di-import ke akun Vercel owner (team/namespace "agoyo") lewat GitHub App yang sudah terpasang. Environment variable NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sudah diisi dengan nilai asli dari dashboard Supabase (Settings > API Keys > Legacy anon key), dan build berhasil tanpa error. Aplikasi sudah live dan bisa diakses di https://agoyohpp.vercel.app, terverifikasi halaman login tampil dengan benar.
+=== PENGUJIAN END-TO-END (SUDAH SELESAI) ===
 
-Catatan penting soal .env.local: saat proses deploy ditemukan bahwa file .env.local di komputer owner ternyata masih berisi teks placeholder/contoh untuk NEXT_PUBLIC_SUPABASE_ANON_KEY (bukan key asli), sehingga server lokal (npm run dev) kemungkinan belum bisa konek ke Supabase dengan benar selama ini. Owner perlu memperbarui file .env.local di lokal dengan anon key asli dari dashboard Supabase (Settings > API Keys > tab "Legacy anon, service_role API keys") supaya development lokal berjalan normal. Environment variable di Vercel sendiri sudah benar dan tidak terpengaruh masalah ini.
+Seluruh role sudah dites langsung di https://agoyohpp.vercel.app dengan login sungguhan oleh owner.
+
+Role Gudang (boya@boya.com): dashboard tampil benar, halaman Stok AGOYO STOCK menampilkan 8 produk dengan jumlah dan satuan yang benar, halaman PO Eksternal berhasil menampilkan daftar dan berhasil membuat PO baru (contoh: PO-TEST-001), dan halaman Request dari Cabang tampil benar (kosong karena belum ada request masuk).
+
+Role Kasir (cahyani@sri.com): berhasil menambah item ke keranjang dan memproses transaksi setelah dua bug diperbaiki (lihat bagian Bug di bawah). Transaksi berhasil tersimpan dan stock cabang otomatis berkurang sesuai resep.
+
+Role Staff (rafasya@hayyan.com): dashboard menampilkan nama staff, cabang (AGOYO Coffee - Kelapa Gading), dan tabel stock cabang read-only. Tabel kosong karena cabang ini belum menerima stock transfer, ini bukan bug.
+
+Role Admin (prayogaadhidewabrata@gmail.com): dashboard ringkasan menampilkan data stock gudang, PO Eksternal terbaru, request dari cabang, dan transaksi kasir terbaru dengan benar dan konsisten dengan pengujian role lain.
+
+=== BUG YANG DITEMUKAN DAN SUDAH DIPERBAIKI ===
+
+Saat pengujian role Kasir, ditemukan dua bug terkait ketidakcocokan nama kolom antara kode dan skema database. Pertama, saat insert ke tabel pos_transactions, kode mencoba menyimpan kolom "status" yang tidak ada di skema, dan memakai nama "total" padahal kolom sebenarnya bernama "total_amount". Sudah diperbaiki di commit 397c55b. Kedua, saat membaca resep dari tabel recipes untuk mengurangi stock cabang, kode memakai nama kolom "quantity" padahal kolom sebenarnya bernama "quantity_used". Sudah diperbaiki di commit 6afc519.
+
+Setelah kedua perbaikan ini, transaksi kasir sudah diuji ulang dan berhasil sepenuhnya (transaksi tersimpan dan stock cabang berkurang otomatis).
+
+=== FITUR TAMBAHAN: TOMBOL LOGOUT ===
+
+Saat pengujian, ditemukan bahwa tidak ada satupun halaman (admin/gudang/kasir/staff) yang punya tombol logout. Fitur ini sudah ditambahkan ke keempat halaman dashboard tersebut (memanggil supabase.auth.signOut() lalu redirect ke halaman /login), sudah di-deploy dan diuji berhasil.
+
+=== CATATAN TEKNIS YANG PERLU DIPERBAIKI NANTI (TIDAK MENDESAK) ===
+
+Logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
+
+Catatan penting soal .env.local: saat proses deploy ditemukan bahwa file .env.local di komputer owner ternyata masih berisi teks placeholder/contoh untuk NEXT_PUBLIC_SUPABASE_ANON_KEY (bukan key asli). Environment variable di Vercel sendiri sudah benar dan tidak terpengaruh masalah ini, tapi owner perlu memperbarui file .env.local di lokal dengan anon key asli dari dashboard Supabase (Settings > API Keys > tab "Legacy anon, service_role API keys") kalau suatu saat ingin menjalankan development lokal (npm run dev). Belum ada konfirmasi apakah ini sudah diperbaiki di lokal.
 
 === MODUL YANG BELUM DIKERJAKAN ===
 
-Pengujian end-to-end untuk role gudang, kasir, dan staff (login sungguhan dan mencoba fitur masing-masing seperti membuat PO Eksternal, memproses transaksi kasir, atau melihat stock cabang) belum dilakukan, meskipun user, data pendukung, dan aplikasi yang sudah live di Vercel sudah siap untuk dites.
+Tidak ada modul besar yang belum dikerjakan. Semua fitur inti (Gudang, Kasir, Staff, Admin, login, logout) sudah selesai, di-deploy, dan diuji end-to-end berhasil.
 
-=== LANGKAH SELANJUTNYA ===
+=== LANGKAH SELANJUTNYA (OPSIONAL) ===
 
-Langkah yang disarankan berikutnya: pertama, owner memperbaiki file .env.local lokal dengan anon key asli (lihat catatan di atas). Kedua, melakukan pengujian end-to-end tiap role langsung di https://agoyohpp.vercel.app (login sebagai gudang/kasir/staff dan mencoba fitur masing-masing, termasuk halaman stock gudang yang baru selesai dibuat).
+Beberapa hal opsional yang bisa dikerjakan berikutnya kalau owner mau: perbaiki file .env.local lokal (lihat catatan di atas), pertimbangkan mengubah logika transfer stock dan transaksi kasir jadi atomic transaction/RPC di Supabase, dan tambahkan lebih banyak data produk/menu/resep sesuai kebutuhan bisnis nyata.
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
