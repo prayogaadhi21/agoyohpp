@@ -42,17 +42,17 @@ Data menu dan resep juga sudah diisi supaya modul Kasir bisa dites transaksinya:
 
 Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
 
-Proses deploy ke Vercel sudah dimulai: owner sudah membuat akun Vercel (namespace "agoyo", masuk masa Pro Trial) menggunakan login GitHub. Owner sedang dalam proses instalasi GitHub App Vercel (klik "Install" di halaman vercel.com/new) supaya Vercel bisa mengakses repo agoyohpp untuk diimport. Proses import project, pengisian environment variable (NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY), dan klik Deploy belum dilakukan karena masih menunggu instalasi GitHub App tersebut selesai.
+Deploy ke Vercel sudah selesai dan berhasil: project agoyohpp sudah di-import ke akun Vercel owner (team/namespace "agoyo") lewat GitHub App yang sudah terpasang. Environment variable NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY sudah diisi dengan nilai asli dari dashboard Supabase (Settings > API Keys > Legacy anon key), dan build berhasil tanpa error. Aplikasi sudah live dan bisa diakses di https://agoyohpp.vercel.app, terverifikasi halaman login tampil dengan benar.
+
+Catatan penting soal .env.local: saat proses deploy ditemukan bahwa file .env.local di komputer owner ternyata masih berisi teks placeholder/contoh untuk NEXT_PUBLIC_SUPABASE_ANON_KEY (bukan key asli), sehingga server lokal (npm run dev) kemungkinan belum bisa konek ke Supabase dengan benar selama ini. Owner perlu memperbarui file .env.local di lokal dengan anon key asli dari dashboard Supabase (Settings > API Keys > tab "Legacy anon, service_role API keys") supaya development lokal berjalan normal. Environment variable di Vercel sendiri sudah benar dan tidak terpengaruh masalah ini.
 
 === MODUL YANG BELUM DIKERJAKAN ===
 
-Pengujian end-to-end untuk role gudang, kasir, dan staff (login sungguhan dan mencoba fitur masing-masing seperti membuat PO Eksternal, memproses transaksi kasir, atau melihat stock cabang) belum dilakukan, meskipun user dan data pendukungnya sudah siap.
-
-Deploy ke Vercel belum selesai, masih menunggu instalasi GitHub App Vercel oleh owner, lalu import project, isi environment variables, dan klik Deploy.
+Pengujian end-to-end untuk role gudang, kasir, dan staff (login sungguhan dan mencoba fitur masing-masing seperti membuat PO Eksternal, memproses transaksi kasir, atau melihat stock cabang) belum dilakukan, meskipun user, data pendukung, dan aplikasi yang sudah live di Vercel sudah siap untuk dites.
 
 === LANGKAH SELANJUTNYA ===
 
-Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: melanjutkan proses deploy ke Vercel (lanjut dari instalasi GitHub App), atau melakukan pengujian end-to-end tiap role (login sebagai gudang/kasir/staff dan mencoba fitur masing-masing, termasuk halaman stock gudang yang baru selesai dibuat).
+Langkah yang disarankan berikutnya: pertama, owner memperbaiki file .env.local lokal dengan anon key asli (lihat catatan di atas). Kedua, melakukan pengujian end-to-end tiap role langsung di https://agoyohpp.vercel.app (login sebagai gudang/kasir/staff dan mencoba fitur masing-masing, termasuk halaman stock gudang yang baru selesai dibuat).
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
