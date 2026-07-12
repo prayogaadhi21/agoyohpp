@@ -12,6 +12,11 @@ export default function AdminPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+    async function handleLogout() {
+        await supabase.auth.signOut();
+        window.location.href = '/login';
+    }
+
 useEffect(() => {
     loadData();
 }, []);
@@ -52,6 +57,7 @@ return (
     <main style={{ padding: 40, fontFamily: 'sans-serif' }}>
 <h1>Dashboard Admin</h1>
 <p>Ringkasan seluruh data AGOYO STOCK dan cabang AGOYO.</p>
+<button onClick={handleLogout} style={{ marginBottom: 16 }}>Logout</button>
 {loading && <p>Memuat data...</p>}
  {error && <p style={{ color: 'red' }}>{error}</p>}
 
