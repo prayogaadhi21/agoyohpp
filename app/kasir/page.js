@@ -98,8 +98,7 @@ export default function KasirPage() {
                 .insert({
                             branch_id: profile.branch_id,
                             cashier_id: profile.id,
-                            total,
-                            status: 'selesai',
+                        total_amount: total,
                 })
                 .select()
                 .single();
