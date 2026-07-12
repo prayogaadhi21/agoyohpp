@@ -12,6 +12,11 @@ export default function KasirPage() {
     const [success, setSuccess] = useState('');
     const [processing, setProcessing] = useState(false);
 
+    async function handleLogout() {
+        await supabase.auth.signOut();
+        window.location.href = '/login';
+    }
+
   async function loadData() {
         setLoading(true);
         setError('');
@@ -188,6 +193,7 @@ export default function KasirPage() {
   return (
         <main style={{ padding: 24, fontFamily: 'sans-serif', maxWidth: 900, margin: '0 auto' }}>
       <h1>Kasir POS</h1>
+<button onClick={handleLogout} style={{ marginBottom: 16 }}>Logout</button>
 {profile && (
           <p>
             Kasir: {profile.name} - Cabang: {profile.branches?.name}
