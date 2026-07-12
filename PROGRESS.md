@@ -64,7 +64,7 @@ Saat pengujian, ditemukan bahwa tidak ada satupun halaman (admin/gudang/kasir/st
 
 Logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
 
-Catatan penting soal .env.local: saat proses deploy ditemukan bahwa file .env.local di komputer owner ternyata masih berisi teks placeholder/contoh untuk NEXT_PUBLIC_SUPABASE_ANON_KEY (bukan key asli). Environment variable di Vercel sendiri sudah benar dan tidak terpengaruh masalah ini, tapi owner perlu memperbarui file .env.local di lokal dengan anon key asli dari dashboard Supabase (Settings > API Keys > tab "Legacy anon, service_role API keys") kalau suatu saat ingin menjalankan development lokal (npm run dev). Belum ada konfirmasi apakah ini sudah diperbaiki di lokal.
+Catatan penting soal .env.local: saat proses deploy ditemukan bahwa file .env.local di komputer owner ternyata masih berisi teks placeholder/contoh untuk NEXT_PUBLIC_SUPABASE_ANON_KEY (bukan key asli). Environment variable di Vercel sendiri sudah benar dan tidak terpengaruh masalah ini, tapi owner perlu memperbarui file .env.local di lokal dengan anon key asli dari dashboard Supabase (Settings > API Keys > tab "Legacy anon, service_role API keys") kalau suatu saat ingin menjalankan development lokal (npm run dev). Owner sudah mengonfirmasi bahwa file .env.local di lokal sudah diperbarui dengan URL dan anon key asli dari Supabase, jadi masalah ini sudah selesai diperbaiki.
 
 === MODUL YANG BELUM DIKERJAKAN ===
 
@@ -72,7 +72,7 @@ Tidak ada modul besar yang belum dikerjakan. Semua fitur inti (Gudang, Kasir, St
 
 === LANGKAH SELANJUTNYA (OPSIONAL) ===
 
-Beberapa hal opsional yang bisa dikerjakan berikutnya kalau owner mau: perbaiki file .env.local lokal (lihat catatan di atas), pertimbangkan mengubah logika transfer stock dan transaksi kasir jadi atomic transaction/RPC di Supabase, dan tambahkan lebih banyak data produk/menu/resep sesuai kebutuhan bisnis nyata.
+Beberapa hal opsional yang bisa dikerjakan berikutnya kalau owner mau: pertimbangkan mengubah logika transfer stock dan transaksi kasir jadi atomic transaction/RPC di Supabase, dan tambahkan lebih banyak data produk/menu/resep sesuai kebutuhan bisnis nyata.
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
