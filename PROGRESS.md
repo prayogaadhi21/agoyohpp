@@ -24,7 +24,7 @@ Tabel yang sudah dibuat: branches, products, users, warehouse_stock, branch_stoc
 
 Fondasi project yang sudah dibuat: supabase/schema.sql (seluruh skema database), package.json, .gitignore, next.config.js, .env.local.example, lib/supabaseClient.js (koneksi ke Supabase), app/layout.js (root layout), app/page.js (redirect otomatis ke halaman login), app/login/page.js (form login yang mendeteksi role user dan redirect ke dashboard sesuai role), serta README.md (panduan setup Supabase, install, run local, dan deploy ke Vercel).
 
-Modul Gudang sudah lengkap, terdiri dari: app/gudang/page.js (dashboard dengan navigasi ke 3 sub halaman), app/gudang/po-eksternal/page.js (daftar PO Eksternal), app/gudang/po-eksternal/baru/page.js (form membuat PO Eksternal baru dengan multi item), dan app/gudang/request/page.js (daftar request/PO Internal dari cabang dengan tombol "Setujui dan Kirim" yang otomatis membuat stock_transfer, mengurangi warehouse_stock, menambah branch_stock, dan update status request).
+Modul Gudang sudah lengkap, terdiri dari: app/gudang/page.js (dashboard dengan navigasi ke 3 sub halaman), app/gudang/stok/page.js (tampilan stock gudang read-only, join warehouse_stock dengan products, menampilkan nama produk, kategori, jumlah, satuan, dan terakhir update), app/gudang/po-eksternal/page.js (daftar PO Eksternal), app/gudang/po-eksternal/baru/page.js (form membuat PO Eksternal baru dengan multi item), dan app/gudang/request/page.js (daftar request/PO Internal dari cabang dengan tombol "Setujui dan Kirim" yang otomatis membuat stock_transfer, mengurangi warehouse_stock, menambah branch_stock, dan update status request).
 
 Modul Kasir/POS sudah lengkap di app/kasir/page.js: menampilkan menu dari menu_items (yang aktif saja), kasir bisa klik menu untuk menambah ke keranjang, atur jumlah tiap item, lihat total harga, lalu klik "Proses Transaksi". Saat transaksi diproses: sistem menyimpan data ke pos_transactions dan pos_transaction_items, lalu otomatis membaca resep tiap menu dari tabel recipes dan mengurangi branch_stock cabang tempat kasir bertugas sesuai takaran resep dikali jumlah terjual. Profil kasir (nama, id, dan cabang) diambil otomatis dari akun yang sedang login lewat tabel users.
 
@@ -42,13 +42,9 @@ Data menu dan resep juga sudah diisi supaya modul Kasir bisa dites transaksinya:
 
 Catatan teknis yang perlu diperbaiki nanti: logika transfer stock di app/gudang/request/page.js dan logika pengurangan stock di app/kasir/page.js masih berupa beberapa query Supabase berurutan, belum atomic transaction/RPC. Ini aman untuk versi awal, tapi sebaiknya diperbaiki nanti supaya lebih tahan terhadap error di tengah proses (misalnya kalau koneksi terputus di tengah transaksi).
 
-Catatan tambahan: link "Stok AGOYO STOCK" di dashboard Gudang (app/gudang/page.js) mengarah ke app/gudang/stok/page.js, namun file tersebut belum pernah dibuat di repo ini sehingga saat ini akan menampilkan halaman 404. Ini perlu dibuat menyusul.
-
 Proses deploy ke Vercel sudah dimulai: owner sudah membuat akun Vercel (namespace "agoyo", masuk masa Pro Trial) menggunakan login GitHub. Owner sedang dalam proses instalasi GitHub App Vercel (klik "Install" di halaman vercel.com/new) supaya Vercel bisa mengakses repo agoyohpp untuk diimport. Proses import project, pengisian environment variable (NEXT_PUBLIC_SUPABASE_URL dan NEXT_PUBLIC_SUPABASE_ANON_KEY), dan klik Deploy belum dilakukan karena masih menunggu instalasi GitHub App tersebut selesai.
 
 === MODUL YANG BELUM DIKERJAKAN ===
-
-Halaman app/gudang/stok/page.js (tampilan stock gudang) belum ada, padahal sudah ada link ke halaman itu dari dashboard Gudang.
 
 Pengujian end-to-end untuk role gudang, kasir, dan staff (login sungguhan dan mencoba fitur masing-masing seperti membuat PO Eksternal, memproses transaksi kasir, atau melihat stock cabang) belum dilakukan, meskipun user dan data pendukungnya sudah siap.
 
@@ -56,7 +52,7 @@ Deploy ke Vercel belum selesai, masih menunggu instalasi GitHub App Vercel oleh 
 
 === LANGKAH SELANJUTNYA ===
 
-Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: melanjutkan proses deploy ke Vercel (lanjut dari instalasi GitHub App), melakukan pengujian end-to-end tiap role (login sebagai gudang/kasir/staff dan mencoba fitur masing-masing), atau membuat halaman app/gudang/stok/page.js yang masih hilang.
+Ada beberapa opsi yang bisa dipilih untuk dilanjutkan: melanjutkan proses deploy ke Vercel (lanjut dari instalasi GitHub App), atau melakukan pengujian end-to-end tiap role (login sebagai gudang/kasir/staff dan mencoba fitur masing-masing, termasuk halaman stock gudang yang baru selesai dibuat).
 
 === CARA MELANJUTKAN PROJECT INI DI LAIN WAKTU ===
 
