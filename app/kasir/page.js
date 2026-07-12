@@ -121,13 +121,13 @@ export default function KasirPage() {
           for (const cartItem of cart) {
                     const { data: recipeRows, error: recipeError } = await supabase
                       .from('recipes')
-                      .select('product_id, quantity')
+                      .select('product_id, quantity_used')
                       .eq('menu_item_id', cartItem.menu_item_id);
 
                 if (recipeError) throw recipeError;
 
                 for (const recipe of recipeRows) {
-                            const usedQty = recipe.quantity * cartItem.qty;
+                            const usedQty = recipe.quantity_used * cartItem.qty;
 
                       const { data: stockRow, error: stockFetchError } = await supabase
                               .from('branch_stock')
